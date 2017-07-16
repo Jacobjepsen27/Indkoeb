@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C1F4548-3B5E-4E37-A4EB-DE70CEBB6049}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6164A1B5-04EF-4D96-84A9-C958DD0C9AE0}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Indkoeb", "src\Indkoeb\Indkoeb.xproj", "{672F1BDB-A3B2-402B-B465-AA747C9E0238}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{672F1BDB-A3B2-402B-B465-AA747C9E0238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672F1BDB-A3B2-402B-B465-AA747C9E0238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672F1BDB-A3B2-402B-B465-AA747C9E0238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672F1BDB-A3B2-402B-B465-AA747C9E0238}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{672F1BDB-A3B2-402B-B465-AA747C9E0238} = {6C1F4548-3B5E-4E37-A4EB-DE70CEBB6049}
+	EndGlobalSection
+EndGlobal
