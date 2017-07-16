@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Indkoeb.Data;
 using Indkoeb.Models;
 using Indkoeb.Services;
+using MySQL.Data.Entity.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Indkoeb
 {
@@ -39,9 +41,10 @@ namespace Indkoeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connString = Configuration.GetConnectionString("DefaultConnection");
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseMySQL(connString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -55,7 +58,7 @@ namespace Indkoeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -83,6 +86,45 @@ namespace Indkoeb
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            context.Database.Migrate();
+
+            if (!roleManager.RoleExistsAsync("Admin").Result)
+            {
+                IdentityRole role = new IdentityRole()
+                {
+                    Name = "Admin"
+                };
+                roleManager.CreateAsync(role).Wait();
+            }
+
+            if (!roleManager.RoleExistsAsync("User").Result)
+            {
+                IdentityRole role = new IdentityRole()
+                {
+                    Name = "User"
+                };
+                roleManager.CreateAsync(role).Wait();
+            }
+
+            context.SaveChanges();
+            IList<ApplicationUser> adminList = await userManager.GetUsersInRoleAsync("Admin");
+            if (!adminList.Any())
+            {
+                ApplicationUser appUser = new ApplicationUser();
+                appUser.Email = "IndkoebApp@gmail.com";
+                appUser.UserName = "Admin";
+                //Trying to create IdentityUser
+                //IdentityResult result = 
+                await userManager.CreateAsync(appUser, "43Polser!");
+                //If success, assign role to user
+                //if (result.Succeeded)
+                //{
+                userManager.AddToRoleAsync(appUser, "Admin").Wait();
+                //}
+            }
+            context.SaveChanges();
+
         }
     }
 }
